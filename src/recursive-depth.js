@@ -14,37 +14,22 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 class DepthCalculator {
   calculateDepth(arr) {
-    let resultDepth = 0; 
-    let currentDepth = 0;
-    goDown(arr, currentDepth, resultDepth);
-    
-    // return currentDepth
+    if(findArrays(arr).length != 0){
+      let flatterArray = arr.flat()
+      // console.log(flatterArray)
+      return 1 + this.calculateDepth(flatterArray);
+    } else {
+      return 1;
+    }
   }  
 }
 
-
-function goDown(arr, currentDepth, resultDepth) { 
-  arr.forEach((element, index) => {
-    console.log(element)
-    if (isNotEmptyArray(element)){
-      ++currentDepth;
-      goDown(element, currentDepth, resultDepth)
-    } else if (Array.isArray(element)) {
-      ++currentDepth;
-    } else if (index === arr.length - 1) {
-      if (currentDepth > resultDepth) resultDepth = currentDepth;
-      return resultDepth
-    }
-    console.log('M ' + currentDepth + resultDepth)
-  });
-  // console.log([currentDepth, resultDepth])
-  }
-
-function isNotEmptyArray(arr) {
-  return (Array.isArray(arr) && arr.length > 0)
+function findArrays(arr) {
+  return arr.filter(i => Array.isArray(i))
 }
 
-let test = [1, 2, 3, [1, 2, 3], 5, [1, 2, 3]]
+// let test = [1, 2, 3, [1, 2, 3], 5, [1, 2, 3]]
+let test = [1, [4, []], [5, [6, [7, [8]]]]]
 let dC = new DepthCalculator()
 console.log(dC.calculateDepth(test))
 
